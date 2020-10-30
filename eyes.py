@@ -337,7 +337,7 @@ def frame(p):
 		curX = -30.0 + curX * 60.0
 		curY = -30.0 + curY * 60.0
 	else :
-		# Autonomous eye position
+		# API controlled eye position -- attempt
 		if isMoving == True:
 			if dt <= moveDuration:
 				scale        = (now - startTime) / moveDuration
@@ -355,12 +355,39 @@ def frame(p):
 				isMoving     = False
 		else:
 			if dt >= holdDuration:
-				destX        = random.uniform(-30.0, 30.0)
-				n            = math.sqrt(900.0 - destX * destX)
-				destY        = random.uniform(-n, n)
+				destX        = config.DEST_X
+				# n            = math.sqrt(900.0 - destX * destX)
+				destY        = config.DEST_Y
 				moveDuration = random.uniform(0.075, 0.175)
 				startTime    = now
 				isMoving     = True
+				print(f'eyes.py: destX: {destX}: {destY}')
+    # Original Code
+	# else :
+	# 	# Autonomous eye position
+	# 	if isMoving == True:
+	# 		if dt <= moveDuration:
+	# 			scale        = (now - startTime) / moveDuration
+	# 			# Ease in/out curve: 3*t^2-2*t^3
+	# 			scale = 3.0 * scale * scale - 2.0 * scale * scale * scale
+	# 			curX         = startX + (destX - startX) * scale
+	# 			curY         = startY + (destY - startY) * scale
+	# 		else:
+	# 			startX       = destX
+	# 			startY       = destY
+	# 			curX         = destX
+	# 			curY         = destY
+	# 			holdDuration = random.uniform(0.1, 1.1)
+	# 			startTime    = now
+	# 			isMoving     = False
+	# 	else:
+	# 		if dt >= holdDuration:
+	# 			destX        = random.uniform(-30.0, 30.0)
+	# 			n            = math.sqrt(900.0 - destX * destX)
+	# 			destY        = random.uniform(-n, n)
+	# 			moveDuration = random.uniform(0.075, 0.175)
+	# 			startTime    = now
+	# 			isMoving     = True
 
 		# repeat for other eye if CRAZY_EYES
 	if CRAZY_EYES:
@@ -641,18 +668,8 @@ def split( # Recursive simulated pupil response when no analog sensor
 
 
 # MAIN LOOP -- runs continuously -------------------------------------------
-# def start_eyes(test):
-# 	global bonnet
-# 	global PUPIL_IN
-# 	global PUPIL_MIN
-# 	global PUPIL_MAX
-# 	global PUPIL_SMOOTH
-# 	global currentPupilScale
+
 while True:
-	# global TEST
-	# print(f'eyes.py: test value: {test}')
-	test = config.TEST
-	print(f'eyes.py: test value: {test}')
 	if PUPIL_IN >= 0: # Pupil scale from sensor
 		v = bonnet.channel[PUPIL_IN].value
 		# If you need to calibrate PUPIL_MIN and MAX,

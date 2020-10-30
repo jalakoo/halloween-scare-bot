@@ -29,6 +29,19 @@ def stop():
     SHOULD_RUN = False
     return "Stopped app"
 
+@app.route("/human", methods = ['POST'])
+def human_detected():
+    response = jsonify({"human":"detected"})
+    return response
+
+@app.route("/look", methods = ['POST'])
+def look():
+    body = request.json
+    config.DEST_X = body['DEST_X']
+    config.DEST_Y = body['DEST_Y']
+    response = jsonify(body)
+    return response
+
+
 if __name__ == "__main__":
-    # app.run()
     app.run (host = "0.0.0.0", port = 5000)
