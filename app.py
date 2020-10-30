@@ -1,11 +1,13 @@
-# import settings
 import config
-# import eyes
-from flask import Flask, request
+import speech
+import os
+from pathlib import Path
+AUDIO_PLAYER = speech.Speech(os.path.join(
+    os.getcwd(), 'bin', 'audio'), "vomit_candy.wav", "come_closer.wav")
+
+from flask import Flask, request, jsonify
 app = Flask(__name__)
 
-# settings.init("foo")
-# TEST=""
 
 @app.route("/test")
 def test():
@@ -13,10 +15,23 @@ def test():
     config.TEST = request.args.get('test')
     return f"TEST={config.TEST}"
 
+@app.route("/audio_test")
+def audio_test():
+    AUDIO_PLAYER.complete_then_play("vomit_candy.wav")
+    resp = jsonify(success=True)
+    return resp
+
+@app.route("/play_audio", methods=['POST'])
+def play_audio():
+    body = request.json
+    audio_file = body['file']
+    AUDIO_PLAYER.complete_then_play(audio_file)
+    resp = jsonify(success=True)
+    return resp
+
 @app.route("/start")
 def start():
-    global SHOULD_RUN
-    SHOULD_RUN = True
+    config.SHOULD_RUN = True
     # global TEST
     # startEyes()
     # eyes.start_eyes(TEST)
@@ -25,8 +40,7 @@ def start():
 
 @app.route("/stop")
 def stop():
-    global SHOULD_RUN
-    SHOULD_RUN = False
+    config.SHOULD_RUN = False
     return "Stopped app"
 
 @app.route("/human", methods = ['POST'])

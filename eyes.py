@@ -669,7 +669,7 @@ def split( # Recursive simulated pupil response when no analog sensor
 
 # MAIN LOOP -- runs continuously -------------------------------------------
 
-while True:
+while config.SHOULD_RUN:
 	if PUPIL_IN >= 0: # Pupil scale from sensor
 		v = bonnet.channel[PUPIL_IN].value
 		# If you need to calibrate PUPIL_MIN and MAX,
