@@ -56,6 +56,38 @@ def look():
     response = jsonify(body)
     return response
 
+def aai_transform(w,h,x,y):
+	""" A function to translate x,y coordinates from Always AI screen
+	to a Pyeye screen given the AI screen w,h,x and y 
+	Input: 4 ints, return 2 ints """
+
+	PI_w, PI_h = 60,60
+	# The PI screen has 0,0 in the center; the translate values
+	# shift the AI x,y coordiate to the correct location.
+	PI_translate_y = 30 
+	PI_translate_x = 30
+
+	new_y = ((PI_h/h)*y)+PI_translate_y
+	new_x = ((PI_w/w)*w)+PI_translate_x
+
+	return new_x, new_y
+
+def aai_translate(x,y,w,h):
+    """
+    pi eyes expect x and y range between -30 to 30
+    aai track from upper-left 0,0 to lower,right max_width, max_height
+    This function converts the incoming aai data to conform to pi eyes
+    """
+    half_width = w/2
+    adjusted_x = x - half_width
+    new_x = adjusted_x * (30/half_width)
+
+    half_height = h/2
+    adjusted_y = y - half_width
+    new_y = adjusted_y * (30/half_height)
+    
+    return new_x, new_y
+
 @app.route("/aai_track", methods = ['POST'])
 def aai_track():
     body = request.json
@@ -63,6 +95,10 @@ def aai_track():
     y = body['Y']
     w = body['W']
     h = body['H']
+    # result = aai_transform(w, h, x, y)
+    result = aai_translate(x,y,w,h)
+    config.DEST_X = result[0]
+    config.DEST_Y = result[1]
     # print(f'app.py: aai_track: x:{x}, y:{y}, w:{w}, h:{h}')
     return "received"
 
