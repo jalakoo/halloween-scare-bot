@@ -350,7 +350,7 @@ def frame(p):
 				startY       = destY
 				curX         = destX
 				curY         = destY
-				holdDuration = random.uniform(0.1, 1.1)
+				holdDuration = random.uniform(0.1, 0.6)
 				startTime    = now
 				isMoving     = False
 		else:
@@ -361,7 +361,7 @@ def frame(p):
 				moveDuration = random.uniform(0.075, 0.175)
 				startTime    = now
 				isMoving     = True
-				print(f'eyes.py: destX: {destX}: {destY}')
+				# print(f'eyes.py: destX: {destX}: {destY}')
     # Original Code
 	# else :
 	# 	# Autonomous eye position

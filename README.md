@@ -36,3 +36,7 @@ SOLUTION:
 1. duplicate .git/index file
 2. delete original
 3. rename copy to .git/index
+
+Process already running
+- list all python processes: `ps -ef | grep python`
+- kill: `kill <process_id>`
