@@ -56,6 +56,16 @@ def look():
     response = jsonify(body)
     return response
 
+@app.route("/aai_track", methods = ['POST'])
+def aai_track():
+    body = request.json
+    x = body['X']
+    y = body['Y']
+    w = body['W']
+    h = body['H']
+    # print(f'app.py: aai_track: x:{x}, y:{y}, w:{w}, h:{h}')
+    return "received"
+
 
 if __name__ == "__main__":
     app.run (host = "0.0.0.0", port = 5000)
